@@ -1,0 +1,42 @@
+type IndexReq {
+}
+
+type IndexResp {
+	TotalFee          float64        `json:"totalFee" form:"totalFee"`                   // 今日销售金额
+	ThisMonthTotalFee float64        `json:"thisMonthTotalFee" form:"thisMonthTotalFee"` // 本月销售金额
+	UsedCount         uint           `json:"usedCount" form:"usedCount"`                 // 已使用房间数量
+	UnusedCount       uint           `json:"unusedCount" form:"unusedCount"`             // 未使用房间数量
+	RoomList          []RoomListItem `json:"roomList" form:"roomList"`                   // 未使用房间数量
+}
+
+type RoomListItem {
+	No     uint `json:"no"`       // 房号
+	Status uint `json:"staus"` // 入住状态
+	Balance    float64 `json:"balance"`    // 剩余金额
+	SurplusDay int32   `json:"surplusDay"` // 剩余天数
+}
+
+type CheckInReq {
+	No       uint    `json:"no"`       // 房号
+	TotalFee float64 `json:"totalFee"` // 金额
+	Day      uint    `json:"day"`      // 天数
+}
+
+type CheckInResp {}
+
+type CompleteReq {
+	No uint `json:"no"` // 房号
+}
+
+type CompleteResp {}
+
+service hotel-api {
+	@handler Index
+	get /hotel/api/index () returns (IndexResp)
+	
+	@handler CheckIn
+	post /hotel/api/checkIn (CheckInReq) returns (CheckInResp)
+	
+	@handler Complete
+	post /hotel/api/complete (CompleteReq) returns (CompleteResp)
+}
